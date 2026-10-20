@@ -38,6 +38,10 @@ export function AuthProvider({ children }) {
       ...state,
       login: async (credentials) => startSession(await api.login(credentials)),
       register: async (details) => startSession(await api.register(details)),
+      /** Adopt a session the API issued outside login/register (e.g. after a password change). */
+      applySession: startSession,
+      /** Merge changed profile fields (e.g. a new name) into the signed-in user. */
+      updateUser: (changes) => setState((s) => (s.user ? { ...s, user: { ...s.user, ...changes } } : s)),
       logout: async () => {
         try {
           await api.logout();

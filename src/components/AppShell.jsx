@@ -63,17 +63,24 @@ export default function AppShell() {
         </nav>
 
         <div className="mt-auto space-y-3">
-          <div className="rounded-2xl bg-surface p-3">
+          <NavLink
+            to="/profile"
+            className={({ isActive }) =>
+              `block rounded-2xl border-2 p-3 transition-colors ${
+                isActive ? 'border-primary/30 bg-lavender' : 'border-transparent bg-surface hover:border-primary/20'
+              }`
+            }
+          >
             <div className="flex items-center gap-3">
               <Avatar name={user?.name} seed={user?.id} />
               <div className="min-w-0">
                 <p className="truncate text-sm font-extrabold">{user?.name}</p>
                 <p className="text-xs font-semibold text-slate">
-                  Level {lvl.level} · {lvl.title}
+                  Level {lvl.level} · {lvl.title} · <span className="text-primary">Profile</span>
                 </p>
               </div>
             </div>
-          </div>
+          </NavLink>
           <button type="button" onClick={handleLogout} disabled={loggingOut} className="btn btn-ghost w-full">
             <LogOut className="size-4" /> {loggingOut ? 'Signing out…' : 'Sign out'}
           </button>
@@ -93,6 +100,10 @@ export default function AppShell() {
             <StatPill icon="Flame" tone="coral" value={streak} label="day streak" />
             <StatPill icon="Zap" tone="gold" value={xp} label="XP" />
             {dash && <span className="hidden sm:inline-flex"><StatPill icon="Trophy" tone="primary" value={`#${dash.rank}`} label="rank" /></span>}
+            {/* On desktop the sidebar card links to the profile; on mobile this avatar does. */}
+            <NavLink to="/profile" className="rounded-full lg:hidden" aria-label="Your profile">
+              <Avatar name={user?.name} seed={user?.id} size="size-9" className="text-xs" />
+            </NavLink>
             <button
               type="button"
               onClick={handleLogout}

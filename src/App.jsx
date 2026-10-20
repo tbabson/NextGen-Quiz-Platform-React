@@ -11,6 +11,7 @@ import LandingPage from './pages/LandingPage.jsx';
 import LeaderboardPage from './pages/LeaderboardPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import PlayQuizPage from './pages/PlayQuizPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
 import QuizzesPage from './pages/QuizzesPage.jsx';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/register']);
@@ -61,6 +62,7 @@ export default function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/attempts/:id" element={<AttemptPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

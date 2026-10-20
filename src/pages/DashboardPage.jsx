@@ -2,30 +2,9 @@ import { motion } from 'framer-motion';
 import { ArrowRight, BookOpen, CheckCircle2, ChevronRight, Flame, Trophy, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAttempts, useDashboard, useQuizzes } from '../api/queries.js';
-import { BadgeIcon, CountUp, ErrorState, Mascot, ProgressBar, Skeleton } from '../components/ui.jsx';
+import { BadgeIcon, ErrorState, Mascot, ProgressBar, Skeleton, StatTile } from '../components/ui.jsx';
 import { rise, stagger } from '../lib/motion.js';
 import { BADGE_CATALOG, levelFor, streakFrom, timeAgo, weekActivity } from '../lib/gamify.js';
-
-function StatTile({ icon: Icon, label, value, suffix, tone }) {
-  const tones = {
-    gold: { box: 'bg-gold-soft', icon: 'bg-gold text-navy' },
-    primary: { box: 'bg-lavender', icon: 'bg-primary text-white' },
-    aqua: { box: 'bg-aqua-soft', icon: 'bg-aqua text-navy' },
-    coral: { box: 'bg-coral-soft', icon: 'bg-coral text-white' },
-  }[tone];
-  return (
-    <motion.div variants={rise} whileHover={{ y: -4 }} className={`rounded-3xl p-4 sm:p-5 ${tones.box}`}>
-      <span className={`grid size-10 place-items-center rounded-2xl ${tones.icon}`}>
-        <Icon className="size-5" strokeWidth={2.5} />
-      </span>
-      <p className="mt-3 text-2xl font-extrabold tabular-nums sm:text-3xl">
-        {typeof value === 'number' ? <CountUp value={value} /> : value}
-        {suffix && <span className="text-base font-bold text-slate">{suffix}</span>}
-      </p>
-      <p className="text-xs font-bold uppercase tracking-wide text-slate">{label}</p>
-    </motion.div>
-  );
-}
 
 function DashboardSkeleton() {
   return (

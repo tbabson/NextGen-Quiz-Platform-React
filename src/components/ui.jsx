@@ -1,8 +1,9 @@
 import { AnimatePresence, animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
-import { Award, Flame, Footprints, LoaderCircle, Lock, RotateCcw, Star, Target, Trophy, Zap } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { Award, Eye, EyeOff, Flame, Footprints, LoaderCircle, Lock, RotateCcw, Star, Target, Trophy, Zap } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { avatarTone, badgeMeta, initials } from '../lib/gamify.js';
+import { rise } from '../lib/motion.js';
 
 const ICONS = { Award, Flame, Footprints, Star, Target, Trophy, Zap };
 
@@ -92,6 +93,81 @@ export function ScoreRing({ value = 0, size = 168, stroke = 14, tone = 'var(--co
         />
       </svg>
       <div className="absolute inset-0 grid place-items-center text-center">{children}</div>
+    </div>
+  );
+}
+
+const STAT_TONES = {
+  gold: { box: 'bg-gold-soft', icon: 'bg-gold text-navy' },
+  primary: { box: 'bg-lavender', icon: 'bg-primary text-white' },
+  aqua: { box: 'bg-aqua-soft', icon: 'bg-aqua text-navy' },
+  coral: { box: 'bg-coral-soft', icon: 'bg-coral text-white' },
+};
+
+/** A coloured stat card (number + label). Animates with its parent's `stagger` variants. */
+export function StatTile({ icon: Icon, label, value, suffix, tone }) {
+  const tones = STAT_TONES[tone];
+  return (
+    <motion.div variants={rise} whileHover={{ y: -4 }} className={`rounded-3xl p-4 sm:p-5 ${tones.box}`}>
+      <span className={`grid size-10 place-items-center rounded-2xl ${tones.icon}`}>
+        <Icon className="size-5" strokeWidth={2.5} />
+      </span>
+      <p className="mt-3 text-2xl font-extrabold tabular-nums sm:text-3xl">
+        {typeof value === 'number' ? <CountUp value={value} /> : value}
+        {suffix && <span className="text-base font-bold text-slate">{suffix}</span>}
+      </p>
+      <p className="text-xs font-bold uppercase tracking-wide text-slate">{label}</p>
+    </motion.div>
+  );
+}
+
+/** Label + control + animated inline error. The control should set aria-describedby={`${id}-error`}. */
+export function Field({ id, label, error, hint, children }) {
+  return (
+    <div>
+      <label htmlFor={id} className="mb-1.5 block text-sm font-bold text-navy">
+        {label}
+      </label>
+      {children}
+      {hint && !error && <p className="mt-1.5 text-xs font-semibold text-slate">{hint}</p>}
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            id={`${id}-error`}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-1.5 text-xs font-bold text-danger"
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/** Password input with a show/hide toggle. Extra props go to the <input>. */
+export function PasswordInput({ id, error, ...inputProps }) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="relative">
+      <input
+        id={id}
+        type={visible ? 'text' : 'password'}
+        className="input pr-12"
+        aria-invalid={!!error}
+        aria-describedby={error ? `${id}-error` : undefined}
+        {...inputProps}
+      />
+      <button
+        type="button"
+        onClick={() => setVisible((v) => !v)}
+        className="absolute top-1/2 right-3 grid size-8 -translate-y-1/2 place-items-center rounded-lg text-slate hover:bg-line"
+        aria-label={visible ? 'Hide password' : 'Show password'}
+      >
+        {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+      </button>
     </div>
   );
 }

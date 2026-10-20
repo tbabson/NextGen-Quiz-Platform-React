@@ -115,6 +115,12 @@ export const api = {
   register: async (body) => (await raw('/auth/register', { method: 'POST', body, auth: false })).data,
   login: async (body) => (await raw('/auth/login', { method: 'POST', body, auth: false })).data,
   logout: () => raw('/auth/logout', { method: 'POST', auth: false }),
+  /** Signs out every other device and returns a fresh session for this one. */
+  changePassword: async (body) => (await request('/auth/change-password', { method: 'POST', body })).data,
+
+  // Profile
+  profile: () => get('/me'),
+  updateProfile: async (body) => (await request('/me', { method: 'PATCH', body })).data,
 
   // Data
   dashboard: () => get('/me/dashboard'),

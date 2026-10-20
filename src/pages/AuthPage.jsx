@@ -1,9 +1,9 @@
 import { AnimatePresence, motion, useAnimationControls } from 'framer-motion';
-import { AlertCircle, ArrowRight, Eye, EyeOff, Sparkles } from 'lucide-react';
+import { AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext.jsx';
-import { Logo, Mascot, Spinner } from '../components/ui.jsx';
+import { Field, Logo, Mascot, PasswordInput, Spinner } from '../components/ui.jsx';
 import { pageMotion } from '../lib/motion.js';
 
 // Seeded, fictitious test accounts (see the API README). Hide with VITE_SHOW_DEMO_ACCOUNTS=false.
@@ -14,30 +14,6 @@ const DEMO_ACCOUNTS = [
 ];
 const DEMO_PASSWORD = 'Password123!';
 const SHOW_DEMO = import.meta.env.VITE_SHOW_DEMO_ACCOUNTS !== 'false';
-
-function Field({ id, label, error, children }) {
-  return (
-    <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-bold text-navy">
-        {label}
-      </label>
-      {children}
-      <AnimatePresence>
-        {error && (
-          <motion.p
-            id={`${id}-error`}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mt-1.5 text-xs font-bold text-danger"
-          >
-            {error}
-          </motion.p>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
 
 export default function AuthPage({ mode }) {
   const isRegister = mode === 'register';
@@ -50,7 +26,6 @@ export default function AuthPage({ mode }) {
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
 
   const update = (key) => (e) => {
     setForm((f) => ({ ...f, [key]: e.target.value }));
@@ -195,27 +170,14 @@ export default function AuthPage({ mode }) {
               />
             </Field>
             <Field id="password" label="Password" error={errors.password}>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  className="input pr-12"
-                  autoComplete={isRegister ? 'new-password' : 'current-password'}
-                  placeholder={isRegister ? 'At least 8 characters' : '••••••••'}
-                  value={form.password}
-                  onChange={update('password')}
-                  aria-invalid={!!errors.password}
-                  aria-describedby={errors.password ? 'password-error' : undefined}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  className="absolute top-1/2 right-3 grid size-8 -translate-y-1/2 place-items-center rounded-lg text-slate hover:bg-line"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-                </button>
-              </div>
+              <PasswordInput
+                id="password"
+                error={errors.password}
+                autoComplete={isRegister ? 'new-password' : 'current-password'}
+                placeholder={isRegister ? 'At least 8 characters' : '••••••••'}
+                value={form.password}
+                onChange={update('password')}
+              />
             </Field>
 
             <button type="submit" disabled={submitting} className="btn btn-primary w-full py-4 text-base">
