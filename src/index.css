@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Nunito Sans', ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand: purple = identity, aqua = learning progress, gold = rewards, coral = challenges */
+  --color-primary: #6246ea;
+  --color-primary-dark: #4b32c9;
+  --color-primary-deep: #3a24a8;
+  --color-lavender: #e9e5ff;
+  --color-aqua: #00bfa6;
+  --color-aqua-dark: #009985;
+  --color-aqua-soft: #d9f7f2;
+  --color-gold: #ffc857;
+  --color-gold-dark: #e0a630;
+  --color-gold-soft: #fff4d9;
+  --color-coral: #ff6b6b;
+  --color-coral-dark: #e04848;
+  --color-coral-soft: #ffe6e6;
+  --color-navy: #1b2142;
+  --color-slate: #64748b;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fee2e2;
+  --color-surface: #f7f8fc;
+  --color-line: #e6e8f2;
+
+  --shadow-card: 0 1px 2px rgb(27 33 66 / 0.04), 0 8px 24px -12px rgb(27 33 66 / 0.12);
+  --shadow-pop: 0 20px 50px -20px rgb(98 70 234 / 0.45);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-surface text-navy font-sans antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-extrabold tracking-tight text-navy;
+  }
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-3xl border border-line bg-white shadow-card;
+  }
+
+  /* Chunky "pressable" buttons: a solid bottom edge that collapses on press. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-3 text-sm font-extrabold
+      uppercase tracking-wide transition-[transform,box-shadow,background-color] duration-100
+      select-none disabled:cursor-not-allowed disabled:opacity-50;
+    box-shadow: 0 4px 0 0 var(--btn-edge, transparent);
+  }
+  .btn:not(:disabled):active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 var(--btn-edge, transparent);
+  }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-[#6d53ef];
+    --btn-edge: var(--color-primary-deep);
+  }
+  .btn-aqua {
+    @apply bg-aqua text-navy hover:bg-[#14c9b1];
+    --btn-edge: var(--color-aqua-dark);
+  }
+  .btn-gold {
+    @apply bg-gold text-navy hover:bg-[#ffd06e];
+    --btn-edge: var(--color-gold-dark);
+  }
+  .btn-coral {
+    @apply bg-coral text-white hover:bg-[#ff7b7b];
+    --btn-edge: var(--color-coral-dark);
+  }
+  .btn-ghost {
+    @apply border-2 border-line bg-white text-navy hover:bg-surface;
+    --btn-edge: var(--color-line);
+  }
+
+  .input {
+    @apply w-full rounded-2xl border-2 border-line bg-surface px-4 py-3 text-navy font-semibold
+      placeholder:text-slate/60 placeholder:font-medium transition-colors
+      focus:border-primary focus:bg-white focus:outline-none;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
