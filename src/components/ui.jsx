@@ -1,4 +1,4 @@
-import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
+import { AnimatePresence, animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { Award, Flame, Footprints, LoaderCircle, Lock, RotateCcw, Star, Target, Trophy, Zap } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
@@ -139,6 +139,16 @@ export function Skeleton({ className = '' }) {
 
 export function Spinner({ className = 'size-5' }) {
   return <LoaderCircle className={`animate-spin ${className}`} />;
+}
+
+/**
+ * Hosts a shared-layout (layoutId) indicator, such as an active-tab highlight, in its own AnimatePresence.
+ * Unwrapped, the indicator registers with the enclosing route-transition AnimatePresence and never
+ * reports its exit as complete, so mode="wait" hangs and the next page never mounts (blank screen on
+ * sign-out, or when leaving a page that contains one).
+ */
+export function ActiveIndicator({ show, children }) {
+  return <AnimatePresence initial={false}>{show && children}</AnimatePresence>;
 }
 
 export function FullScreenLoader() {

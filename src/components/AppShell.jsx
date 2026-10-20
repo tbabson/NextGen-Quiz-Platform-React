@@ -6,7 +6,7 @@ import { useAttempts, useDashboard } from '../api/queries.js';
 import { useAuth } from '../auth/AuthContext.jsx';
 import { levelFor, streakFrom } from '../lib/gamify.js';
 import { pageMotion } from '../lib/motion.js';
-import { Avatar, Logo, StatPill } from './ui.jsx';
+import { ActiveIndicator, Avatar, Logo, StatPill } from './ui.jsx';
 
 const NAV = [
   { to: '/dashboard', label: 'Home', icon: House },
@@ -47,13 +47,13 @@ export default function AppShell() {
                     isActive ? 'text-primary' : 'text-slate hover:bg-surface hover:text-navy'
                   }`}
                 >
-                  {isActive && (
+                  <ActiveIndicator show={isActive}>
                     <motion.span
                       layoutId="nav-active"
                       className="absolute inset-0 rounded-2xl border-2 border-primary/30 bg-lavender"
                       transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                     />
-                  )}
+                  </ActiveIndicator>
                   <Icon className="relative size-5" strokeWidth={2.5} />
                   <span className="relative">{label}</span>
                 </span>
@@ -123,9 +123,9 @@ export default function AppShell() {
             <NavLink key={to} to={to} className="relative flex flex-col items-center gap-1 py-2.5">
               {({ isActive }) => (
                 <>
-                  {isActive && (
+                  <ActiveIndicator show={isActive}>
                     <motion.span layoutId="tab-active" className="absolute top-0 h-1 w-10 rounded-b-full bg-primary" />
-                  )}
+                  </ActiveIndicator>
                   <motion.span
                     animate={{ scale: isActive ? 1.12 : 1, y: isActive ? -1 : 0 }}
                     className={`grid size-9 place-items-center rounded-xl ${isActive ? 'bg-lavender text-primary' : 'text-slate'}`}

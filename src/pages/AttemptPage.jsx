@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Sparkles, Trophy, X, Zap } from 'lucide-r
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAttempt } from '../api/queries.js';
-import { BadgeIcon, CountUp, ErrorState, Mascot, ScoreRing, Skeleton } from '../components/ui.jsx';
+import { ActiveIndicator, BadgeIcon, CountUp, ErrorState, Mascot, ScoreRing, Skeleton } from '../components/ui.jsx';
 import { rise, stagger } from '../lib/motion.js';
 import { formatDate, scoreMessage } from '../lib/gamify.js';
 
@@ -259,7 +259,9 @@ export default function AttemptPage() {
                 onClick={() => setFilter(key)}
                 className="relative rounded-xl px-3 py-1.5 text-xs font-extrabold"
               >
-                {filter === key && <motion.span layoutId="result-filter" className="absolute inset-0 rounded-xl bg-lavender" />}
+                <ActiveIndicator show={filter === key}>
+                  <motion.span layoutId="result-filter" className="absolute inset-0 rounded-xl bg-lavender" />
+                </ActiveIndicator>
                 <span className={`relative ${filter === key ? 'text-primary' : 'text-slate'}`}>{label}</span>
               </button>
             ))}

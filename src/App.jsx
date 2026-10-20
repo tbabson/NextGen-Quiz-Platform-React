@@ -1,4 +1,4 @@
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, useIsPresent } from 'framer-motion';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext.jsx';
 import AppShell from './components/AppShell.jsx';
@@ -15,18 +15,27 @@ import QuizzesPage from './pages/QuizzesPage.jsx';
 
 const PUBLIC_PATHS = new Set(['/', '/login', '/register']);
 
+// AnimatePresence keeps the previous route tree mounted while it animates out. Two traps on sign-in/out:
+//  - A <Navigate> in that exiting tree re-fires on every render (its `state` object is new each time),
+//    navigating in an endless loop.
+//  - Rendering null there instead unmounts the motion element that must finish the exit animation,
+//    so AnimatePresence (mode="wait") never mounts the next page: a blank screen.
+// So only the live tree redirects; the exiting tree keeps its old content while it fades out.
+
 function RequireAuth({ children }) {
   const { status } = useAuth();
   const location = useLocation();
+  const isPresent = useIsPresent();
   if (status === 'loading') return <FullScreenLoader />;
-  if (status === 'anonymous') return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  if (status === 'anonymous' && isPresent) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   return children;
 }
 
 function GuestOnly({ children }) {
   const { status } = useAuth();
+  const isPresent = useIsPresent();
   if (status === 'loading') return <FullScreenLoader />;
-  if (status === 'authenticated') return <Navigate to="/dashboard" replace />;
+  if (status === 'authenticated' && isPresent) return <Navigate to="/dashboard" replace />;
   return children;
 }
 
