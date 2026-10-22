@@ -1,14 +1,14 @@
 # PUNCH NextGen Quiz & Rewards: React client
 
-The web client for the [NextGen Quiz Platform API](../NextGen%20Quiz%20Platform%20Node). Students sign up, take quizzes, earn XP and badges, keep a daily streak and compete on a leaderboard.
+The web client for the [NextGen Quiz Platform API](https://nextgen-quiz-platform-node.onrender.com). Students sign up, take quizzes, earn XP and badges, keep a daily streak and compete on a leaderboard.
 
 ## Design ideas borrowed
 
-| Inspiration | What the client takes from it |
-|---|---|
+| Inspiration                            | What the client takes from it                                                                                                                  |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Duolingo** (progress and motivation) | XP levels, a daily streak with a 7-day strip, a winding learning path, chunky "pressable" buttons, a mascot ("Volt"), and badge-unlock moments |
-| **Kahoot!** (competitive quizzes) | A 3-2-1 countdown, four coloured answer tiles with shapes (so colour is never the only cue), one question at a time, and an animated podium |
-| **Codecademy** (structured learning) | Course progress, a clear "up next" step, a review screen before submitting, and a question-by-question breakdown afterwards |
+| **Kahoot!** (competitive quizzes)      | A 3-2-1 countdown, four coloured answer tiles with shapes (so colour is never the only cue), one question at a time, and an animated podium    |
+| **Codecademy** (structured learning)   | Course progress, a clear "up next" step, a review screen before submitting, and a question-by-question breakdown afterwards                    |
 
 **Theme:** primary purple `#6246EA` (brand, navigation), aqua `#00BFA6` (learning progress), gold `#FFC857` (XP and rewards), coral `#FF6B6B` (streaks and challenges), on a soft `#F7F8FC` background with white cards. Dark text sits on gold and aqua surfaces. The font is Plus Jakarta Sans. All tokens live in [src/index.css](src/index.css).
 
